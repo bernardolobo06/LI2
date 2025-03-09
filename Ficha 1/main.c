@@ -1,5 +1,7 @@
 //compile with 'gcc -Wall -Wextra -pedantic -O2'
 
+//NOTA: FALTA CRIAR RESTRIÇÕES: SÓ LETRAS MAIÚSCULAS, N [1, 26], factors|I|F [0, 10^9] 
+
 #include <stdio.h>
 
 void sort (int N, char leters[], int multiples[]) {
