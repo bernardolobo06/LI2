@@ -4,14 +4,14 @@
 
 #include <stdio.h>
 
-void sort (int N, char leters[], int multiples[]) {
+void sort (int N, char letters[], int multiples[]) {
     for (int i = 0; i < N - 1; i++) {
         for (int j = i + 1; j < N; j++) {
 
-            if (leters[i] > leters[j]) {
-                char temp_let = leters[i];
-                leters[i] = leters[j];
-                leters[j] = temp_let;
+            if (letters[i] > letters[j]) {
+                char temp_let = letters[i];
+                letters[i] = letters[j];
+                letters[j] = temp_let;
 
                 int temp_mult = multiples[i];
                 multiples[i] = multiples[j];
@@ -21,7 +21,7 @@ void sort (int N, char leters[], int multiples[]) {
     }
 }
 
-void mult(int N, char leters[], int factors[], int I, int F) {
+void mult(int N, char letters[], int factors[], int I, int F) {
     int multiples[N];
 
     if (I > F) {
@@ -40,10 +40,10 @@ void mult(int N, char leters[], int factors[], int I, int F) {
         }
     }
 
-    sort(N, leters, multiples);
+    sort(N, letters, multiples);
 
     for (int i = 0; i < N; i++) {
-        printf("%c %d\n", leters[i], multiples[i]);
+        printf("%c %d\n", letters[i], multiples[i]);
     }
 }
 
@@ -53,15 +53,15 @@ int main () {
     scanf("%d", &N);
 
     int factors[N];
-    char leters[N];
+    char letters[N];
     for (int i = 0; i < N; i++) {
-        scanf(" %c %d", &leters[i], &factors[i]);
+        scanf(" %c %d", &letters[i], &factors[i]);
     }
 
     int I, F;
     scanf("%d %d", &I, &F);
 
-    mult(N, leters, factors, I, F);
+    mult(N, letters, factors, I, F);
 
     return 0;    
 }
