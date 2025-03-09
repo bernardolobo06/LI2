@@ -49,7 +49,6 @@ void mult(int N, char letters[], int factors[], int I, int F) {
 
 int main () {
     int N;
-
     scanf("%d", &N);
 
     int factors[N];
