@@ -56,7 +56,7 @@ int main () {
     }
 
     int I, F;
-    if (scanf("%d %d", &I, &F || I < 0 || I > 1000000000 || F < 0 || F > 1000000000) != 2) return 1;
+    if (scanf("%d %d", &I, &F) != 2 || I < 0 || I > 1000000000 || F < 0 || F > 1000000000) return 1;
 
     mult(N, letters, factors, I, F);
 
