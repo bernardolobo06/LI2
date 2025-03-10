@@ -5,7 +5,6 @@
 void sort (int N, char letters[], int multiples[]) {
     for (int i = 0; i < N - 1; i++) {
         for (int j = i + 1; j < N; j++) {
-
             if (letters[i] > letters[j]) {
                 char temp_let = letters[i];
                 letters[i] = letters[j];
@@ -29,11 +28,11 @@ void mult(int N, char letters[], int factors[], int I, int F) {
     }
     else {
         for (int i = 0; i < N; i++) {
-            multiples[i] = 0;
-            for (int j = I; j <= F; j++) {
-                if (j % factors[i] == 0) {
-                    multiples[i]++;
-                }
+            if (I == 0) {
+                multiples[i] = F / factors[i];
+            }
+            else {
+                multiples[i] = (F / factors[i]) - ((I - 1) / factors[i]);
             }
         }
     }
