@@ -49,16 +49,16 @@ void mult(int N, char letters[], int factors[], int I, int F) {
 
 int main () {
     int N;
-    scanf("%d", &N);
+    if (scanf("%d", &N) != 1) return 1;
 
     int factors[N];
     char letters[N];
     for (int i = 0; i < N; i++) {
-        scanf(" %c %d", &letters[i], &factors[i]);
+        if (scanf(" %c %d", &letters[i], &factors[i]) != 2) return 1;
     }
 
     int I, F;
-    scanf("%d %d", &I, &F);
+    if (scanf("%d %d", &I, &F) != 2) return 1;
 
     mult(N, letters, factors, I, F);
 
