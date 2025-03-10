@@ -1,7 +1,5 @@
 //compile with 'gcc -Wall -Wextra -pedantic -O2'
 
-//NOTA: FALTA CRIAR RESTRIÇÕES: SÓ LETRAS MAIÚSCULAS, N [1, 26], factors|I|F [0, 10^9] 
-
 #include <stdio.h>
 
 void sort (int N, char letters[], int multiples[]) {
@@ -49,16 +47,16 @@ void mult(int N, char letters[], int factors[], int I, int F) {
 
 int main () {
     int N;
-    if (scanf("%d", &N) != 1) return 1;
+    if (scanf("%d", &N) != 1 || N < 1 || N > 26) return 1;
 
     int factors[N];
     char letters[N];
     for (int i = 0; i < N; i++) {
-        if (scanf(" %c %d", &letters[i], &factors[i]) != 2) return 1;
+        if (scanf(" %c %d", &letters[i], &factors[i]) != 2 || letters[i] < 'A' || letters[i] > 'Z' || factors[i] < 0 || factors[i] > 1000000000) return 1;
     }
 
     int I, F;
-    if (scanf("%d %d", &I, &F) != 2) return 1;
+    if (scanf("%d %d", &I, &F || I < 0 || I > 1000000000 || F < 0 || F > 1000000000) != 2) return 1;
 
     mult(N, letters, factors, I, F);
 
