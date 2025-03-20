@@ -1,0 +1,46 @@
+Maior subproduto de algarismos
+
+Atenção!
+Você deve submeter uma solução original e elaborada por si. Leia com atenção esta página sobre a avaliação das fichas e guiões do projeto.
+
+Descrição
+O seu programa deve ler um número com no máximo 1000 algarismos e o tamanho do subnúmero (pense em substrings) e deve imprimir o valor do maior produto dos algarismos de todos os subnúmeros possíveis.
+
+Se o input for 63915 e o tamanho for 3 os subnúmeros possíveis são:
+
+639 produto = 6*3*9 = 162
+391 produto = 3*9*1 = 27
+915 produto = 9*1*5 = 45
+Então o seu programa deveria imprimir o valor 162.
+
+Input
+O seu programa deve ler:
+    Uma linha com o número de casos C;
+    C linhas, contendo cada uma um número N com entre 1 e 1000 algarismos e o tamanho S.
+
+Output
+O seu programa deve imprimir C linhas, contendo cada uma delas o maior subproduto de S algarismos consecutivos do número N.
+
+Restrições
+    1 ≤ C ≤ 100
+    0 ≤ N ≤ 101000
+    0 ≤ S ≤ log10(N)
+
+Exemplo
+
+Input
+6
+63915 3
+6910903493392708063602715822781037242444 10
+59269181295826298237568243383236949118333682956695532831763251417822252896672862 10
+59269181295826298237568243383236949118333682956695532831763251417822252896672862 25
+59269181295826298237568243383236949118333682956695532831763251417822252896672862 28
+6948484775847233776664882887795805369839837590679296253774951688298887953294171751691117325178738175245482772575228583912474311653114253592565959216339766995153 60
+
+Output
+162
+125440
+34992000
+14042858206003200
+304679870005248000
+7106808899353003670536684830720000000
