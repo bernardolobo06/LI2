@@ -1,94 +1,123 @@
 #include <stdio.h>
+#include <string.h>
 
 int toInt (char c) {
     return c - '0';
 }
 
-int slen (char s[]) {
+char toChar (int c) {
+    return c + '0';
+}
+
+void reverse (char* str) {
     int i = 0;
-    while (s[i] != '\0') i++;
-    return i;
+    int j = strlen(str) - 1;
+
+    while (i < j) {
+        char c = str[i];
+        str[i] = str[j];
+        str[j] = c;
+        i++;
+        j--;
+    }
 }
 
-void copy(int acc[], int max[]) {
-    int bool = 0;
-    int j = 0;
+void rem (char N[]) {
+    //contar quantos zeros à esquerda existem
+    int k = 0;
+    while (N[k] == '0') k++;
 
-    while (j < 1000 && bool == 0) {
-        if (acc[j] > max[j]) {
-            bool = 1;
-        } 
-        else if (acc[j] < max[j]) {
-            return;
-        }
-        j++;
-    }
-
-    if (bool) {
-        j = 0;
-        while (j < 1000) {
-            max[j] = acc[j];
-            j++;
+    //remover os zeros à esquerda
+    if (k > 0) {
+        int len = strlen(N) + 1; // +1 para o '\0'
+        for (int i = 0; i < len - k; i++) {
+            N[i] = N[i + k];
         }
     }
 }
 
-void convert (int max[], char prods[]) {
-    int start = 0;
-    while (start < 999 && max[start] == 0) start++;
+void multiplicacao (char n1[], char n2[], char res[]) {
+    int len1 = strlen(n1), len2 = strlen(n2), len = len1+len2;
+    //inverter as strings numéricas
+    reverse(n1); reverse(n2);
 
-    int j = 0;
-    for (int i = start; i < 1000; i++) {
-        prods[j++] = max[i] + '0';
+    //inicializar aux com {0, 0, 0, ...}
+    int aux[len];
+    for (int i = 0; i < len; i++) aux[i] = 0;
+
+    //calcular a multiplicação
+    for (int i1 = 0; i1 < len1; i1++) {
+        for (int i2 = 0; i2 < len2; i2++) {
+            int temp = toInt(n1[i1]) * toInt(n2[i2]);
+            aux[i1+i2]   += temp;
+            aux[i1+i2+1] += aux[i1+i2] /10;
+            aux[i1+i2]   =  aux[i1+i2] %10;
+        }
     }
-    prods[j] = '\0';
+
+    //converter aux numa string em res
+    int i;
+    for (i = 0; i < len; i++) {
+        res[i] = toChar(aux[i]);
+    }
+    res[i] = '\0';
+
+    //inverter res (para o número ser apresentado no formato correto)
+    reverse(res);
+
+    //remover os zeros à esquerda
+    rem(res);
 }
 
-void subproduto(char N[], int S, char prods[]) {
-    int len = slen(N);
-    int max[1000];
-    int acc[1000];
-
-    for (int i = 0; i < 1000; i++) {
-        max[i] = 0;
-        acc[i] = 0;
+int compare (char n1[], char n2[]) {
+    int len1 = strlen(n1), len2 = strlen(n2);
+    if (len1 > len2) return 1;
+    if (len1 < len2) return -1;
+    for (int i = 0; i < len1; i++) {
+        if (n1[i] > n2[i]) return 1;
+        if (n1[i] < n2[i]) return -1;
     }
+    return 0;
+}
 
-    for (int i = 0; i <= len - S; i++) {
-        for (int j = 0; j < 1000; j++) acc[j] = 0;
-        acc[999] = 1;
+void subprod (char N[], int S, char res[]) {
+    char prod[1001]; int len = strlen(N) - S;
 
-        for (int j = 0; j < S; j++) {
-            int digit = toInt(N[i + j]);
-            
-            for (int k = len - 1; k > 0; k--) {
-                acc[k] *= digit;
-                acc[k - 1] += acc[k] / 10; //dezenas
-                acc[k] %= 10; //unidades
+    for (int index = 0; index <= len; index++) {
+        // Inicializar res com o primeiro elemento de N
+        res[0] = N[index];
+        res[1] = '\0';
+
+        // Multiplicar recursivamente pelos próximos elementos
+        for (int i = 1; i < S; i++) {
+            char aux[2];
+            aux[0] = N[index + i];
+            aux[1] = '\0';
+            multiplicacao(res, aux, res);
+            if (strlen(res) > strlen(prod)) strcpy(prod, res);
+            else if (strlen(res) == strlen(prod)) {
+                if (compare(res, prod) > 0) strcpy(prod, res);
             }
         }
-
-        copy(acc, max);
     }
 
-    convert (max, prods);
+    strcpy(res, prod);
 }
 
-int main() {
-    char N[1001];
-    int C, S;
-
+int main () {
+    int C;
     if (scanf("%d", &C) != 1) return 1;
-    char prods[1001];
 
     for (int i = 0; i < C; i++) {
+        char N[1001], res[1001]; int S;
         if (scanf(" %s %d", N, &S) != 2) return 1;
-        subproduto(N, S, prods);
+        subprod(N, S, res);
+       
+        for (int j = 0; res[j] != '\0'; j++) {
+            printf("%c", res[j]);
+        }
+        printf("\n");
     }
-
-    for (int i = 0; i < C; i++) {
-        printf("%s\n", prods);
-    }
-
+    
     return 0;
 }
