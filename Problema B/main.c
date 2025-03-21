@@ -1,7 +1,7 @@
 /*
-Problema   : B (Maior subproduto de algarismos)
-Disciplina : Laboratórios de Informática II (UMinho) 
-Autor      : (c) Marcos Bernardo da Silva Lobo <a110959@alunos.uminho.pt>, 2025-03-21
+Problema B (Maior subproduto de algarismos)
+Laboratórios de Informática II (UMinho 24/25) 
+(c) Marcos Bernardo da Silva Lobo <a110959@alunos.uminho.pt>, 2025-03-21
 
 Este programa contém a resolução do Problema B de LI2 (24/25) e as definições explícitas de várias funções definidas em string.h.
 */
