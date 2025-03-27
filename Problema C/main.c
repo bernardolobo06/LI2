@@ -9,6 +9,7 @@ Este programa contém a resolução do Problema C de LI2 (24/25).
 //compile with 'gcc -Wall -Wextra -pedantic -O2 -fsanitize=address -o main main.c'
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 typedef struct Data {
