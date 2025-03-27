@@ -34,7 +34,7 @@ int compare (Data *a, Data *b) {
     Data *a1 = a;
     Data *b1 = b;
     if (a1 -> value == b1 -> value) {
-        return a1 -> group - b1 -> group; // a1 > b1 = +; a1 < b1 = -
+        return a1 -> group - b1 -> group; // a1 > b1 -> +; a1 < b1 -> -
     }
     return a1 -> value - b1 -> value;
 }
