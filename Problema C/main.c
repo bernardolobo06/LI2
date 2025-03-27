@@ -8,37 +8,6 @@ Este programa contém a resolução do Problema C de LI2 (24/25).
 
 //compile with 'gcc -Wall -Wextra -pedantic -O2 -fsanitize=address -o main main.c'
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
-typedef struct Data {
-    int value;
-    int index;
-    int group;
-} Data;
-
-// máximo de grupos  100
-// máximo de valores 100
-typedef struct Table {
-    int pos[100 * 100];
-    int ord[100 * 100];
-    int grp[100 * 100];
-    int val[100 * 100];
-    int fst[100 * 100];
-    double rel[100 * 100];
-} Table;
-
-//auxiliar functions
-int compare (const void *a, const void *b) {
-    Data *a1 = (Data *)a;
-    Data *b1 = (Data *)b;
-    if (a1 -> value == b1 -> value) {
-        return a1 -> group - b1 -> group; // a1 > b1 -> +; a1 < b1 -> -
-    }
-    return a1 -> value - b1 -> value;
-}
-
 /* ALTERAR PARA NÃO UTILIZAR STRINGS
 void quicksort(void *base, size_t num, size_t size, int (*compar)(const void *, const void *)) {
     char *array = base;
@@ -69,7 +38,6 @@ void quicksort(void *base, size_t num, size_t size, int (*compar)(const void *, 
     quicksort(array, i, size, compar);
     quicksort(array + (i + 1) * size, num - i - 1, size, compar);
 }
-*/
 
 double valor_referencia (int num_grupos) {
     double p = 0.95;
@@ -80,6 +48,38 @@ double valor_referencia (int num_grupos) {
     double z = (p < 0.5) ? -(a - poly / q) : (a - poly / q);
     double x = df * pow(1.0 - 2.0 / (9.0 * df) + z * sqrt(2.0 / (9.0 * df)), 3.0);
     return x;
+}
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+typedef struct Data {
+    int value;
+    int index;
+    int group;
+} Data;
+
+// máximo de grupos  100
+// máximo de valores 100
+typedef struct Table {
+    int pos[100 * 100];
+    int ord[100 * 100];
+    int grp[100 * 100];
+    int val[100 * 100];
+    int fst[100 * 100];
+    double rel[100 * 100];
+} Table;
+
+//auxiliar functions
+int compare (const void *a, const void *b) {
+    Data *a1 = (Data *)a;
+    Data *b1 = (Data *)b;
+    if (a1 -> value == b1 -> value) {
+        return a1 -> group - b1 -> group; // a1 > b1 -> +; a1 < b1 -> -
+    }
+    return a1 -> value - b1 -> value;
 }
 
 //main functions
@@ -116,6 +116,29 @@ void print (Table *t, int cont) {
     }
 }
 
+// Cálculo e impressão das médias por grupo
+void print_group_avg(Table *t, int cont, int G) {
+    double sum[101] = {0}; 
+    int count[101] = {0}; 
+    double total_sum = 0;
+    int total_count = 0;
+    
+    for (int i = 0; i < cont; i++) {
+        sum[t->grp[i]] += t->rel[i];
+        count[t->grp[i]]++;
+        total_sum += t->rel[i];
+        total_count++;
+    }
+    
+    printf("\n  Grp MediaOrdem\n");
+    for (int g = 1; g <= G; g++) {
+        if (count[g] > 0) {
+            printf("%4d %10.1f\n", g, sum[g] / count[g]);
+        }
+    }
+    printf("Todos %10.1f\n", total_sum / total_count);
+}
+
 int main () {
     Table table;
     Data lines[100 * 100];
@@ -129,14 +152,14 @@ int main () {
             lines[index].value = value;
             lines[index].index = index;
             lines[index].group = g + 1;
-            table.grp[index] = g + 1;
             index++;
         }
     }
     cont = index;
 
-    process (&table, cont, lines);
-    print (&table, cont);
+    process(&table, cont, lines);
+    print(&table, cont);
+    print_group_avg(&table, cont, G);
     
     return 0;
 }
