@@ -9,7 +9,6 @@ Este programa contém a resolução do Problema C de LI2 (24/25).
 //compile with 'gcc -Wall -Wextra -pedantic -O2 -fsanitize=address -o main main.c'
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 
 typedef struct Data {
@@ -34,9 +33,39 @@ int compare (Data *a, Data *b) {
     Data *a1 = a;
     Data *b1 = b;
     if (a1 -> value == b1 -> value) {
-        return a1 -> group - b1 -> group;
+        return a1 -> group - b1 -> group; // a1 > b1 = +; a1 < b1 = -
     }
     return a1 -> value - b1 -> value;
+}
+
+void quicksort(void *base, size_t num, size_t size, int (*compar)(const void *, const void *)) {
+    char *array = base;
+
+    if (num < 2) return;
+
+    char *pivot = array + (num - 1) * size;
+    size_t i = 0;
+
+    for (size_t j = 0; j < num - 1; j++) {
+        char *element = array + j * size;
+        if (compar(element, pivot) < 0) {
+            if (i != j) {
+                char temp[size];
+                memcpy(temp, element, size);
+                memcpy(element, array + i * size, size);
+                memcpy(array + i * size, temp, size);
+            }
+            i++;
+        }
+    }
+
+    char temp[size];
+    memcpy(temp, pivot, size);
+    memcpy(pivot, array + i * size, size);
+    memcpy(array + i * size, temp, size);
+
+    quicksort(array, i, size, compar);
+    quicksort(array + (i + 1) * size, num - i - 1, size, compar);
 }
 
 double valor_referencia (int num_grupos) {
@@ -52,7 +81,7 @@ double valor_referencia (int num_grupos) {
 
 //main functions
 void process (Table *t, int cont, Data lines[]) {
-    qsort (lines, cont, sizeof(Data), compare);
+    quicksort (lines, cont, sizeof(Data), compare);
     //ordena os valores de 'lines' com 'cont' elementos de tamanho 'sizeof(Data)' usando a função 'compare'
     
     for (int i = 0; i < cont; i++) {
