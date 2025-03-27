@@ -65,13 +65,13 @@ int partition (Data *lines, int N, int pivot) {
     int i = 0, j = 0, r = 0;
     Data aux[N];
     for (i = 0; i < N; i++) {
-        if (pivot >= lines[i].value) {
+        if (pivot > lines[i].value || (pivot == lines[i].value && lines[i].group < lines[N].group)) {
             aux[j++] = lines[i];
             r++;
         }
     }
     for (i = 0; i < N; i++) {
-        if (pivot < lines[i].value) {
+        if (pivot < lines[i].value || (pivot == lines[i].value && lines[i].group >= lines[N].group)) {
             aux[j++] = lines[i];
         }
     }
