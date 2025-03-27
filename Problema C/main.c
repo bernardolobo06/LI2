@@ -10,6 +10,7 @@ Este programa contém a resolução do Problema C de LI2 (24/25).
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 typedef struct Data {
     int value;
