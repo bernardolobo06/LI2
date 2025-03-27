@@ -39,6 +39,7 @@ int compare (Data *a, Data *b) {
     return a1 -> value - b1 -> value;
 }
 
+/* ALTERAR PARA NÃO UTILIZAR STRINGS
 void quicksort(void *base, size_t num, size_t size, int (*compar)(const void *, const void *)) {
     char *array = base;
 
@@ -68,6 +69,7 @@ void quicksort(void *base, size_t num, size_t size, int (*compar)(const void *, 
     quicksort(array, i, size, compar);
     quicksort(array + (i + 1) * size, num - i - 1, size, compar);
 }
+*/
 
 double valor_referencia (int num_grupos) {
     double p = 0.95;
@@ -82,7 +84,7 @@ double valor_referencia (int num_grupos) {
 
 //main functions
 void process (Table *t, int cont, Data lines[]) {
-    quicksort (lines, cont, sizeof(Data), compare);
+    qsort (lines, cont, sizeof(Data), compare);
     //ordena os valores de 'lines' com 'cont' elementos de tamanho 'sizeof(Data)' usando a função 'compare'
     
     for (int i = 0; i < cont; i++) {
@@ -92,12 +94,13 @@ void process (Table *t, int cont, Data lines[]) {
         t -> grp[i] = lines[i].group; //grupo
     }
     
+    //passa uma vez por cada valor
     for (int i = 0; i < cont; i++) {
         int first = -1, last = -1;
-        for (int j = 0; j < cont; j++) {
+        for (int j = i; j < cont; j++) { //segunda passagem para verificar todos os valores j superiores i
             if (t -> val[j] == t -> val[i]) {
-                if (first == -1) first = j;
-                last = j;
+                if (first == -1) first = j; //índice do primeiro valor igual
+                last = j; //índice do último valor igual
             }
         }
         t -> fst[i] = first;
