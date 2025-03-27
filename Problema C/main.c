@@ -41,7 +41,6 @@ void quicksort(void *base, size_t num, size_t size, int (*compar)(const void *, 
 */
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 
 typedef struct Data {
@@ -62,13 +61,42 @@ typedef struct Table {
 } Table;
 
 //auxiliar functions
-int compare (const void *a, const void *b) {
-    Data *a1 = (Data *)a;
-    Data *b1 = (Data *)b;
-    if (a1 -> value == b1 -> value) {
-        return a1 -> group - b1 -> group; // a1 > b1 -> +; a1 < b1 -> -
+int partition (Data *lines, int N, int pivot) {
+    int i = 0, j = 0, r = 0;
+    Data aux[N];
+    for (i = 0; i < N; i++) {
+        if (pivot >= lines[i].value) {
+            aux[j++] = lines[i];
+            r++;
+        }
     }
-    return a1 -> value - b1 -> value;
+    for (i = 0; i < N; i++) {
+        if (pivot < lines[i].value) {
+            aux[j++] = lines[i];
+        }
+    }
+    for (i = 0; i < N; i++) {
+        lines[i] = aux[i];
+    }
+    return r;
+}
+
+void swap(Data *lines, int i, int j) {
+    Data temp = lines[i];
+    lines[i].value = lines[j].value;
+    lines[i].group = lines[j].group;
+    lines[j].value = temp.value;
+    lines[j].group = temp.group;
+}
+
+void quicksort (Data *lines, int N) {
+    int p;
+    if (N > 1) {
+        p = partition(lines, N - 1, lines[N - 1].value);
+        swap(lines, p, N - 1);
+        quicksort(lines, p);
+        quicksort(lines + p + 1, N - p - 1);
+    }
 }
 
 double valor_referencia (int num_grupos) {
@@ -84,7 +112,7 @@ double valor_referencia (int num_grupos) {
 
 //main functions
 void print_table (Table *t, int cont, Data lines[]) {
-    qsort (lines, cont, sizeof(Data), compare);
+    quicksort (lines, cont);
     //ordena os valores de 'lines' com 'cont' elementos de tamanho 'sizeof(Data)' usando a função 'compare'
     
     for (int i = 0; i < cont; i++) {
@@ -151,7 +179,7 @@ void print_group_avg(Table *t, int cont, int G) {
     
     // Impressão dos resultados
     printf("\nCalc: %.2f\n", X);
-    printf("Ref: %.2f\n", ref);
+    printf(" Ref: %.2f\n", ref);
     printf("%s\n", (X >= ref) ? "Sim" : "Nao");
 }
 
