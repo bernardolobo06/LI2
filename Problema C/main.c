@@ -133,10 +133,10 @@ void print_group_avg(Table *t, int cont, int G) {
     printf("\n  Grp MediaOrdem\n");
     for (int g = 1; g <= G; g++) {
         if (count[g] > 0) {
-            printf("%4d %10.1f\n", g, sum[g] / count[g]);
+            printf(" %4d %10.1f\n", g, sum[g] / count[g]);
         }
     }
-    printf("Todos%10.1f\n", total_sum / total_count);
+    printf("Todos %10.1f\n", total_sum / total_count);
 }
 
 int main () {
