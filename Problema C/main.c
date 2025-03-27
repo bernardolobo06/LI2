@@ -28,7 +28,6 @@ typedef struct {
     double rel[100 * 100];
 } Table;
 
-
 int compare(const void *a, const void *b) {
     Data *ea = (Data*)a;
     Data *eb = (Data*)b;
@@ -71,15 +70,13 @@ void print_table(Table *t, int total_values) {
 int main() {
     Table t;
     Data lines[100 * 100]; // ↓
-    int total_values, group_sizes[100];
-    int G, N, value, index = 0;
+    int total_values, G, N, value, index = 0;
     
-    scanf("%d", &G);
+    if (scanf("%d", &G) != 1) return 1;
     for (int g = 0; g < G; g++) {
-        scanf("%d", &N);
-        group_sizes[g] = N;
+        if (scanf("%d", &N) != 1) return 1;
         for (int i = 0; i < N; i++) {
-            scanf("%d", &value);
+            if (scanf("%d", &value) != 1) return 1;
             lines[index].value = value;
             lines[index].index = index;
             lines[index].group = g + 1;
