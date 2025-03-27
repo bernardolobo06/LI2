@@ -97,14 +97,14 @@ void process (Table *t, int cont, Data lines[]) {
     //passa uma vez por cada valor
     for (int i = 0; i < cont; i++) {
         int first = -1, last = -1;
-        for (int j = i; j < cont; j++) { //segunda passagem para verificar todos os valores j superiores i
+        for (int j = 0; j < cont; j++) { //segunda passagem para verificar todos os valores j superiores i
             if (t -> val[j] == t -> val[i]) {
                 if (first == -1) first = j; //índice do primeiro valor igual
                 last = j; //índice do último valor igual
             }
         }
         t -> fst[i] = first;
-        t -> rel[i] = (first+1 + last+1) / 2.0; //incrementar o índice = ordem
+        t -> rel[i] = (++first + ++last) / 2.0; //incrementar o índice = ordem
     }
 }
 
