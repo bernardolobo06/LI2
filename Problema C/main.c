@@ -30,7 +30,7 @@ typedef struct Table {
 } Table;
 
 //auxiliar functions
-int compare (Data *a, Data *b) {
+int compare (const void *a, const void *b) {
     Data *a1 = a;
     Data *b1 = b;
     if (a1 -> value == b1 -> value) {
