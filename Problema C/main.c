@@ -83,7 +83,7 @@ int compare (const void *a, const void *b) {
 }
 
 //main functions
-void process (Table *t, int cont, Data lines[]) {
+void print_table (Table *t, int cont, Data lines[]) {
     qsort (lines, cont, sizeof(Data), compare);
     //ordena os valores de 'lines' com 'cont' elementos de tamanho 'sizeof(Data)' usando a função 'compare'
     
@@ -106,9 +106,7 @@ void process (Table *t, int cont, Data lines[]) {
         t -> fst[i] = first;
         t -> rel[i] = (++first + ++last) / 2.0; //incrementar o índice = ordem
     }
-}
-
-void print (Table *t, int cont) {
+    
     printf(" Pos  Ord  Grp     OrdRel  Val  Prm\n");
     for (int i = 0; i < cont; i++) {
         printf("%4d %4d %4d %10.1f %4d %4d\n", 
@@ -157,8 +155,7 @@ int main () {
     }
     cont = index;
 
-    process(&table, cont, lines);
-    print(&table, cont);
+    print_table(&table, cont, lines);
     print_group_avg(&table, cont, G);
     
     return 0;
