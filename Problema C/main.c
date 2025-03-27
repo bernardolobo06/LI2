@@ -142,6 +142,16 @@ void print_table (Table *t, int cont, Data lines[]) {
     }
 }
 
+void print1 (int G, int count[], double sum[], double total_sum, int total_count) {
+    printf("\n  Grp MediaOrdem\n");
+    for (int g = 1; g <= G; g++) {
+        if (count[g] > 0) {
+            printf(" %4d %10.1f\n", g, sum[g] / count[g]);
+        }
+    }
+    printf("Todos %10.1f\n", total_sum / total_count);
+}
+
 // Cálculo e impressão das médias por grupo
 void print_group_avg(Table *t, int cont, int G) {
     double sum[101] = {0}; 
@@ -156,14 +166,8 @@ void print_group_avg(Table *t, int cont, int G) {
         total_count++;
     }
     
-    printf("\n  Grp MediaOrdem\n");
-    for (int g = 1; g <= G; g++) {
-        if (count[g] > 0) {
-            printf(" %4d %10.1f\n", g, sum[g] / count[g]);
-        }
-    }
-    printf("Todos %10.1f\n", total_sum / total_count);
-    
+    print1 (G, count, sum, total_sum, total_count);
+
     double media_total = total_sum / total_count;
 
     // Cálculo de S e X
@@ -182,7 +186,6 @@ void print_group_avg(Table *t, int cont, int G) {
     printf(" Ref: %.2f\n", ref);
     printf("%s\n", (X >= ref) ? "Sim" : "Nao");
 }
-
 
 int main () {
     Table table;
