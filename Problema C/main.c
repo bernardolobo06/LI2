@@ -151,7 +151,7 @@ void print_group_avg(Table *t, int cont, int G) {
     
     // Impressão dos resultados
     printf("\nCalc: %.2f\n", X);
-    printf("Ref: %.2f\n", ref);
+    printf(" Ref: %.2f\n", ref);
     printf("%s\n", (X >= ref) ? "Sim" : "Nao");
 }
 
