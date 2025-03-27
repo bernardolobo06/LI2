@@ -38,17 +38,6 @@ void quicksort(void *base, size_t num, size_t size, int (*compar)(const void *, 
     quicksort(array, i, size, compar);
     quicksort(array + (i + 1) * size, num - i - 1, size, compar);
 }
-
-double valor_referencia (int num_grupos) {
-    double p = 0.95;
-    double df = num_grupos - 1;
-    double a = (p < 0.5) ?  sqrt(-2.0 * log(p)) : sqrt(-2.0 * log(1.0 - p));
-    double poly = 2.515517 + 0.802853 * a + 0.010328 * a * a;
-    double q = 1.0 + 1.432788 * a + 0.189269 * a * a + 0.001308 * a * a * a;
-    double z = (p < 0.5) ? -(a - poly / q) : (a - poly / q);
-    double x = df * pow(1.0 - 2.0 / (9.0 * df) + z * sqrt(2.0 / (9.0 * df)), 3.0);
-    return x;
-}
 */
 
 #include <stdio.h>
@@ -80,6 +69,17 @@ int compare (const void *a, const void *b) {
         return a1 -> group - b1 -> group; // a1 > b1 -> +; a1 < b1 -> -
     }
     return a1 -> value - b1 -> value;
+}
+
+double valor_referencia (int num_grupos) {
+    double p = 0.95;
+    double df = num_grupos - 1;
+    double a = (p < 0.5) ?  sqrt(-2.0 * log(p)) : sqrt(-2.0 * log(1.0 - p));
+    double poly = 2.515517 + 0.802853 * a + 0.010328 * a * a;
+    double q = 1.0 + 1.432788 * a + 0.189269 * a * a + 0.001308 * a * a * a;
+    double z = (p < 0.5) ? -(a - poly / q) : (a - poly / q);
+    double x = df * pow(1.0 - 2.0 / (9.0 * df) + z * sqrt(2.0 / (9.0 * df)), 3.0);
+    return x;
 }
 
 //main functions
@@ -135,7 +135,26 @@ void print_group_avg(Table *t, int cont, int G) {
         }
     }
     printf("Todos %10.1f\n", total_sum / total_count);
+    
+    double media_total = total_sum / total_count;
+
+    // Cálculo de S e X
+    double S = 0;
+    for (int g = 1; g <= G; g++) {
+        if (count[g] > 0) {
+            double media_g = sum[g] / count[g];
+            S += count[g] * pow(media_g - media_total, 2);
+        }
+    }
+    double X = ((total_count - 1.0) / total_count) * (12 * S / (total_count * total_count - 1));
+    double ref = valor_referencia(G);
+    
+    // Impressão dos resultados
+    printf("\nCalc: %.2f\n", X);
+    printf("Ref: %.2f\n", ref);
+    printf("%s\n", (X >= ref) ? "Sim" : "Nao");
 }
+
 
 int main () {
     Table table;
