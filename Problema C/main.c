@@ -104,7 +104,7 @@ void process (Table *t, int cont, Data lines[]) {
             }
         }
         t -> fst[i] = first;
-        t -> rel[i] = (++first + ++last) / 2.0; //incrementar o índice = ordem
+        t -> rel[i] = (first+1 + last+1) / 2.0; //incrementar o índice = ordem
     }
 }
 
