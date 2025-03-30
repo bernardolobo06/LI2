@@ -1,43 +1,11 @@
+//compile with 'gcc -Wall -Wextra -pedantic -O2 -fsanitize=address -lm -o main main.c'
+
 /*
 Problema C (Comparação de Grupos)
 Laboratórios de Informática II (UMinho 24/25) 
 (c) Marcos Bernardo da Silva Lobo <a110959@alunos.uminho.pt>, 2025-03-xx
 
 Este programa contém a resolução do Problema C de LI2 (24/25).
-*/
-
-//compile with 'gcc -Wall -Wextra -pedantic -O2 -fsanitize=address -o main main.c'
-
-/* ALTERAR PARA NÃO UTILIZAR STRINGS
-void quicksort(void *base, size_t num, size_t size, int (*compar)(const void *, const void *)) {
-    char *array = base;
-
-    if (num < 2) return;
-
-    char *pivot = array + (num - 1) * size;
-    size_t i = 0;
-
-    for (size_t j = 0; j < num - 1; j++) {
-        char *element = array + j * size;
-        if (compar(element, pivot) < 0) {
-            if (i != j) {
-                char temp[size];
-                memcpy(temp, element, size);
-                memcpy(element, array + i * size, size);
-                memcpy(array + i * size, temp, size);
-            }
-            i++;
-        }
-    }
-
-    char temp[size];
-    memcpy(temp, pivot, size);
-    memcpy(pivot, array + i * size, size);
-    memcpy(array + i * size, temp, size);
-
-    quicksort(array, i, size, compar);
-    quicksort(array + (i + 1) * size, num - i - 1, size, compar);
-}
 */
 
 #include <stdio.h>
