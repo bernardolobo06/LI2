@@ -92,7 +92,7 @@ double valor_referencia (int num_grupos) {
 
 //main functions
 void print_table_1 (Table *t, int cont, Data lines[]) {
-    quicksort (lines, cont); //ordena os valores de 'lines' com 'cont' elementos
+    quicksort (lines, cont); //ordena os valores de 'lines'
     
     for (int i = 0; i < cont; i++) {
         t -> pos[i] = i;              //posição no array
@@ -101,6 +101,7 @@ void print_table_1 (Table *t, int cont, Data lines[]) {
         t -> grp[i] = lines[i].group; //grupo
     }
     
+    //********************************************
     //passa uma vez por cada valor
     for (int i = 0; i < cont; i++) {
         int first = -1, last = -1;
@@ -137,15 +138,14 @@ void print_table_3 (double X, double ref) {
     if (X >= ref) printf("Sim\n"); else printf("Nao\n");
 }
 
-// Cálculo e impressão das médias por grupo
-void print_table_2_3 (Table *t, int cont, int G) {
-    double sum[101] = {0}; 
-    int count[101] = {0}; 
+void print_tables_2_3 (Table *t, int cont, int G) {
+    double sum[100] = {0}; 
+    int count[100] = {0}; 
     double total_sum = 0;
     int total_count = 0;
     
     for (int i = 0; i < cont; i++) {
-        sum[t->grp[i]] += t->rel[i];
+        sum[t -> grp[i]] += t->rel[i];
         count[t->grp[i]]++;
         total_sum += t->rel[i];
         total_count++;
@@ -175,20 +175,20 @@ int main () {
     int cont, G, N, value, index = 0;
     
     if (scanf("%d", &G) != 1) return 1;
-    for (int g = 0; g < G; g++) {
+    for (int g = 1; g <= G; g++) {
         if (scanf("%d", &N) != 1) return 1;
         for (int i = 0; i < N; i++) {
             if (scanf("%d", &value) != 1) return 1;
             lines[index].value = value;
             lines[index].index = index;
-            lines[index].group = g + 1;
+            lines[index].group = g;
             index++;
         }
     }
     cont = index;
 
     print_table_1 (&table, cont, lines);
-    print_table_2_3 (&table, cont, G);
+    print_tables_2_3 (&table, cont, G);
     
     return 0;
 }
