@@ -17,8 +17,7 @@ typedef struct Data {
     int group;
 } Data;
 
-// máximo de grupos  100
-// máximo de valores 100
+// tamanho máximo do array 100 (grupos) * 100 (valores) = 10000
 typedef struct Table {
     int pos[100 * 100];
     int ord[100 * 100];
@@ -30,26 +29,38 @@ typedef struct Table {
 
 //auxiliar functions
 int partition (Data *lines, int N, int pivot) {
+    //particiona o struct 'lines' em dois sub-structs, um com os elementos menores ou iguais ao pivot e outro com os maiores
+    //NOTA: o pivot mantém-se como o último elemento do struct 'lines'
+
     int i = 0, j = 0, r = 0;
     Data aux[N];
+
+    //o primeiro loop copia os elementos menores ou iguais ao pivot para o struct auxiliar 'aux'
     for (i = 0; i < N; i++) {
         if (pivot > lines[i].value || (pivot == lines[i].value && lines[i].group < lines[N].group)) {
             aux[j++] = lines[i];
             r++;
         }
     }
+
+    //o segundo loop copia os elementos maiores que o pivot para o struct auxiliar 'aux'
     for (i = 0; i < N; i++) {
         if (pivot < lines[i].value || (pivot == lines[i].value && lines[i].group >= lines[N].group)) {
             aux[j++] = lines[i];
         }
     }
+
+    //copia os elementos do struct auxiliar 'aux' para o struct original 'lines'
     for (i = 0; i < N; i++) {
         lines[i] = aux[i];
     }
+
+    //retorna o número de elementos menores ou iguais ao pivot
     return r;
 }
 
 void swap(Data *lines, int i, int j) {
+    //NOTA: o swap é feito elemento a elemento, para não alterar o registo de índices da struct
     Data temp = lines[i];
     lines[i].value = lines[j].value;
     lines[i].group = lines[j].group;
@@ -59,11 +70,12 @@ void swap(Data *lines, int i, int j) {
 
 void quicksort (Data *lines, int N) {
     int p;
+    //se o número de elementos for 0 ou 1, o struct está ordenado
     if (N > 1) {
         p = partition(lines, N - 1, lines[N - 1].value);
-        swap(lines, p, N - 1);
-        quicksort(lines, p);
-        quicksort(lines + p + 1, N - p - 1);
+        swap(lines, p, N - 1); //troca o pivot com o primeiro elemento maior que ele
+        quicksort(lines, p); //ordena os elementos menores ou iguais ao pivot
+        quicksort(lines + p + 1, N - p - 1); //ordena os elementos maiores que o pivot
     }
 }
 
@@ -79,9 +91,8 @@ double valor_referencia (int num_grupos) {
 }
 
 //main functions
-void print_table (Table *t, int cont, Data lines[]) {
-    quicksort (lines, cont);
-    //ordena os valores de 'lines' com 'cont' elementos de tamanho 'sizeof(Data)' usando a função 'compare'
+void print_table_1 (Table *t, int cont, Data lines[]) {
+    quicksort (lines, cont); //ordena os valores de 'lines' com 'cont' elementos
     
     for (int i = 0; i < cont; i++) {
         t -> pos[i] = i;              //posição no array
@@ -100,7 +111,7 @@ void print_table (Table *t, int cont, Data lines[]) {
             }
         }
         t -> fst[i] = first;
-        t -> rel[i] = (++first + ++last) / 2.0; //incrementar o índice = ordem
+        t -> rel[i] = (t -> ord[first] + t -> ord[last]) / 2.0;
     }
     
     printf(" Pos  Ord  Grp     OrdRel  Val  Prm\n");
@@ -110,7 +121,7 @@ void print_table (Table *t, int cont, Data lines[]) {
     }
 }
 
-void print1 (int G, int count[], double sum[], double total_sum, int total_count) {
+void print_table_2 (int G, int count[], double sum[], double total_sum, int total_count) {
     printf("\n  Grp MediaOrdem\n");
     for (int g = 1; g <= G; g++) {
         if (count[g] > 0) {
@@ -120,8 +131,14 @@ void print1 (int G, int count[], double sum[], double total_sum, int total_count
     printf("Todos %10.1f\n", total_sum / total_count);
 }
 
+void print_table_3 (double X, double ref) {
+    printf("\nCalc: %.2f\n", X);
+    printf(" Ref: %.2f\n", ref);
+    if (X >= ref) printf("Sim\n"); else printf("Nao\n");
+}
+
 // Cálculo e impressão das médias por grupo
-void print_group_avg(Table *t, int cont, int G) {
+void print_table_2_3 (Table *t, int cont, int G) {
     double sum[101] = {0}; 
     int count[101] = {0}; 
     double total_sum = 0;
@@ -134,7 +151,7 @@ void print_group_avg(Table *t, int cont, int G) {
         total_count++;
     }
     
-    print1 (G, count, sum, total_sum, total_count);
+    print_table_2 (G, count, sum, total_sum, total_count);
 
     double media_total = total_sum / total_count;
 
@@ -148,11 +165,8 @@ void print_group_avg(Table *t, int cont, int G) {
     }
     double X = ((total_count - 1.0) / total_count) * (12 * S / (total_count * total_count - 1));
     double ref = valor_referencia(G);
-    
-    // Impressão dos resultados
-    printf("\nCalc: %.2f\n", X);
-    printf(" Ref: %.2f\n", ref);
-    printf("%s\n", (X >= ref) ? "Sim" : "Nao");
+
+    print_table_3 (X, ref);
 }
 
 int main () {
@@ -173,8 +187,8 @@ int main () {
     }
     cont = index;
 
-    print_table(&table, cont, lines);
-    print_group_avg(&table, cont, G);
+    print_table_1 (&table, cont, lines);
+    print_table_2_3 (&table, cont, G);
     
     return 0;
 }
