@@ -91,7 +91,7 @@ double valor_referencia (int num_grupos) {
 }
 
 //main functions
-void print_table_1 (Table *t, int cont, Data lines[]) {
+void print_table_1 (Table *t, int cont, Data *lines) {
     quicksort (lines, cont); //ordena os valores de 'lines'
     
     for (int i = 0; i < cont; i++) {
@@ -100,11 +100,11 @@ void print_table_1 (Table *t, int cont, Data lines[]) {
         t -> val[i] = lines[i].value; //valor
         t -> grp[i] = lines[i].group; //grupo
     }
-    
-    //********************************************
-    for (int i = 0; i < cont; i++) {
+
+    //para cada elemento, calcula a primeira e última posição do valor igual, e a ordem relativa
+    for (int i = 0; i < cont; i++) { //elemento a comparar
         int first = -1, last = -1;
-        for (int j = 0; j < cont; j++) { //segunda passagem para verificar todos os valores j superiores i
+        for (int j = 0; j < cont; j++) { //passagem por todos os elementos
             if (t -> val[j] == t -> val[i]) {
                 if (first == -1) first = j; //índice do primeiro valor igual
                 last = j; //índice do último valor igual
@@ -112,8 +112,8 @@ void print_table_1 (Table *t, int cont, Data lines[]) {
         }
         t -> fst[i] = first;
         t -> rel[i] = (t -> ord[first] + t -> ord[last]) / 2.0;
+        //como a struct 'lines' está ordenada, basta saber o primeiro e último valor para calcular a ordem relativa (média)
     }
-    //********************************************
     
     printf (" Pos  Ord  Grp     OrdRel  Val  Prm\n");
     for (int i = 0; i < cont; i++) {
@@ -139,8 +139,8 @@ void print_table_3 (double X, double ref) {
 }
 
 void print_tables_2_3 (Table *t, int cont, int G) {
-    double sum[101] = {0}; 
-    int count[101] = {0}; 
+    double sum[101] = {0}; //os grupos vão de 1 a 100, logo o array tem 101 posições
+    int count[101] = {0};  //por isso, inicializa-se a posição 0 a 0
     double total_sum = 0;
     int total_count = 0;
     
