@@ -102,7 +102,6 @@ void print_table_1 (Table *t, int cont, Data lines[]) {
     }
     
     //********************************************
-    //passa uma vez por cada valor
     for (int i = 0; i < cont; i++) {
         int first = -1, last = -1;
         for (int j = 0; j < cont; j++) { //segunda passagem para verificar todos os valores j superiores i
@@ -114,41 +113,42 @@ void print_table_1 (Table *t, int cont, Data lines[]) {
         t -> fst[i] = first;
         t -> rel[i] = (t -> ord[first] + t -> ord[last]) / 2.0;
     }
+    //********************************************
     
-    printf(" Pos  Ord  Grp     OrdRel  Val  Prm\n");
+    printf (" Pos  Ord  Grp     OrdRel  Val  Prm\n");
     for (int i = 0; i < cont; i++) {
-        printf("%4d %4d %4d %10.1f %4d %4d\n", 
+        printf ("%4d %4d %4d %10.1f %4d %4d\n", 
         t -> pos[i], t -> ord[i], t -> grp[i], t -> rel[i], t -> val[i], t -> fst[i]);
     }
 }
 
 void print_table_2 (int G, int count[], double sum[], double total_sum, int total_count) {
-    printf("\n  Grp MediaOrdem\n");
+    printf ("\n  Grp MediaOrdem\n");
     for (int g = 1; g <= G; g++) {
         if (count[g] > 0) {
-            printf(" %4d %10.1f\n", g, sum[g] / count[g]);
+            printf (" %4d %10.1f\n", g, sum[g] / count[g]);
         }
     }
-    printf("Todos %10.1f\n", total_sum / total_count);
+    printf ("Todos %10.1f\n", total_sum / total_count);
 }
 
 void print_table_3 (double X, double ref) {
-    printf("\nCalc: %.2f\n", X);
-    printf(" Ref: %.2f\n", ref);
-    if (X >= ref) printf("Sim\n"); else printf("Nao\n");
+    printf ("\nCalc: %.2f\n", X);
+    printf (" Ref: %.2f\n", ref);
+    if (X >= ref) printf ("Sim\n"); else printf ("Nao\n");
 }
 
 void print_tables_2_3 (Table *t, int cont, int G) {
-    double sum[100] = {0}; 
-    int count[100] = {0}; 
+    double sum[101] = {0}; 
+    int count[101] = {0}; 
     double total_sum = 0;
     int total_count = 0;
     
     for (int i = 0; i < cont; i++) {
-        sum[t -> grp[i]] += t->rel[i];
-        count[t->grp[i]]++;
-        total_sum += t->rel[i];
-        total_count++;
+        sum[t -> grp[i]] += t -> rel[i]; //soma das ordens relativas por grupo
+        count[t -> grp[i]]++;            //contagem de elementos por grupo
+        total_sum += t -> rel[i];        //soma total das ordens relativas
+        total_count++;                   //contagem total de elementos
     }
     
     print_table_2 (G, count, sum, total_sum, total_count);
@@ -160,10 +160,10 @@ void print_tables_2_3 (Table *t, int cont, int G) {
     for (int g = 1; g <= G; g++) {
         if (count[g] > 0) {
             double media_g = sum[g] / count[g];
-            S += count[g] * pow(media_g - media_total, 2);
+            S += count[g] * pow (media_g - media_total, 2);
         }
     }
-    double X = ((total_count - 1.0) / total_count) * (12 * S / (total_count * total_count - 1));
+    double X = ((total_count - 1.0) / total_count) * (12 * S / (pow (total_count, 2) - 1));
     double ref = valor_referencia(G);
 
     print_table_3 (X, ref);
@@ -174,11 +174,11 @@ int main () {
     Data lines[100 * 100];
     int cont, G, N, value, index = 0;
     
-    if (scanf("%d", &G) != 1) return 1;
+    if (scanf ("%d", &G) != 1) return 1;
     for (int g = 1; g <= G; g++) {
-        if (scanf("%d", &N) != 1) return 1;
+        if (scanf ("%d", &N) != 1) return 1;
         for (int i = 0; i < N; i++) {
-            if (scanf("%d", &value) != 1) return 1;
+            if (scanf ("%d", &value) != 1) return 1;
             lines[index].value = value;
             lines[index].index = index;
             lines[index].group = g;
